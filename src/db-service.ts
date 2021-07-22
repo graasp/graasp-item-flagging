@@ -40,19 +40,6 @@ export class ItemFlagService {
   }
 
 
-  // Flags
-  private static allColumnsFlags = sql.join(
-    [
-      'id',
-      'name',
-    ].map(c =>
-      !Array.isArray(c) ?
-        sql.identifier([c]) :
-        sql.join(c.map(cwa => sql.identifier([cwa])), sql` AS `)
-    ),
-    sql`, `
-  );
-
   /**
    * Get flag.
    * @param flagId Flag id
@@ -60,7 +47,7 @@ export class ItemFlagService {
    */
   async getFlag(flagId: string, transactionHandler: TrxHandler): Promise<Flag> {
     return transactionHandler.query<Flag>(sql`
-        SELECT ${ItemFlagService.allColumnsFlags} FROM flag
+        SELECT * FROM flag
         WHERE id = ${flagId}
       `)
       .then(({ rows }) => rows[0] || null);
@@ -72,7 +59,7 @@ export class ItemFlagService {
    */
   async getAllFlags(transactionHandler: TrxHandler): Promise<readonly Flag[]> {
     return transactionHandler.query<Flag>(sql`
-        SELECT ${ItemFlagService.allColumnsFlags}
+        SELECT *
         FROM flag
       `)
       .then(({ rows }) => rows);
