@@ -14,7 +14,7 @@
     "hooks:uninstall": "husky uninstall",
     "hooks:install": "husky install",
     "post-commit": "git status",
-    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\"  --fix"
+    "lint": "tsc --noEmit && eslint \"src/**/*.{js,ts}\"  --fix"
   },
   "repository": {
     "type": "git",
