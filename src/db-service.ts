@@ -1,5 +1,5 @@
 // global
-import { sql, DatabaseTransactionConnectionType as TrxHandler } from 'slonik';
+import { sql, DatabaseTransactionConnection as TrxHandler } from 'slonik';
 // local
 import { ItemFlag } from './interfaces/item-flag';
 import { Flag } from './interfaces/flag';
@@ -16,12 +16,15 @@ export class ItemFlagService {
       ['item_id', 'itemId'],
       'creator',
       ['created_at', 'createdAt'],
-    ].map(c =>
-      !Array.isArray(c) ?
-        sql.identifier([c]) :
-        sql.join(c.map(cwa => sql.identifier([cwa])), sql` AS `)
+    ].map((c) =>
+      !Array.isArray(c)
+        ? sql.identifier([c])
+        : sql.join(
+            c.map((cwa) => sql.identifier([cwa])),
+            sql` AS `,
+          ),
     ),
-    sql`, `
+    sql`, `,
   );
 
   /**
@@ -31,14 +34,16 @@ export class ItemFlagService {
    */
   async create(itemFlag: Partial<ItemFlag>, transactionHandler: TrxHandler): Promise<ItemFlag> {
     const { flagId, itemId, creator } = itemFlag;
-    return transactionHandler.query<ItemFlag>(sql`
+    return transactionHandler
+      .query<ItemFlag>(
+        sql`
         INSERT INTO item_flag (flag_id, item_id, creator)
         VALUES (${flagId}, ${itemId}, ${creator})
         RETURNING ${ItemFlagService.allColumns}
-      `)
+      `,
+      )
       .then(({ rows }) => rows[0]);
   }
-
 
   /**
    * Get flag.
@@ -46,10 +51,13 @@ export class ItemFlagService {
    * @param transactionHandler Database transaction handler
    */
   async getFlag(flagId: string, transactionHandler: TrxHandler): Promise<Flag> {
-    return transactionHandler.query<Flag>(sql`
+    return transactionHandler
+      .query<Flag>(
+        sql`
         SELECT * FROM flag
         WHERE id = ${flagId}
-      `)
+      `,
+      )
       .then(({ rows }) => rows[0] || null);
   }
 
@@ -58,10 +66,13 @@ export class ItemFlagService {
    * @param transactionHandler Database transaction handler
    */
   async getAllFlags(transactionHandler: TrxHandler): Promise<readonly Flag[]> {
-    return transactionHandler.query<Flag>(sql`
+    return transactionHandler
+      .query<Flag>(
+        sql`
         SELECT *
         FROM flag
-      `)
+      `,
+      )
       .then(({ rows }) => rows);
   }
 }

@@ -1,29 +1,34 @@
 // global
 import { FastifyLoggerInstance } from 'fastify';
-import { DatabaseTransactionHandler} from 'graasp';
+import { DatabaseTransactionHandler } from 'graasp';
 // other services
 import { Member, ItemService, ItemMembershipService } from 'graasp';
 // local
-import {
-  ItemNotFound, MemberCannotReadItem, FlagNotFound
-} from '../util/graasp-item-flags-error';
+import { ItemNotFound, MemberCannotReadItem, FlagNotFound } from '../util/graasp-item-flags-error';
 import { ItemFlagService } from '../db-service';
 import { BaseItemFlagTask } from './base-item-flag-task';
 import { BaseItemFlag } from '../base-item-flag';
 import { ItemFlag } from '../interfaces/item-flag';
 
 export class CreateItemFlagTask extends BaseItemFlagTask<ItemFlag> {
-  get name(): string { return CreateItemFlagTask.name; }
+  get name(): string {
+    return CreateItemFlagTask.name;
+  }
 
-  constructor(member: Member, data: Partial<ItemFlag>, itemId: string,
-              itemService: ItemService, itemMembershipService: ItemMembershipService,
-              itemFlagService: ItemFlagService) {
+  constructor(
+    member: Member,
+    data: Partial<ItemFlag>,
+    itemId: string,
+    itemService: ItemService,
+    itemMembershipService: ItemMembershipService,
+    itemFlagService: ItemFlagService,
+  ) {
     super(member, itemService, itemMembershipService, itemFlagService);
     this.data = data;
     this.targetId = itemId;
   }
 
-  async run(handler: DatabaseTransactionHandler, log: FastifyLoggerInstance): Promise<void> {
+  async run(handler: DatabaseTransactionHandler, _log: FastifyLoggerInstance): Promise<void> {
     this.status = 'RUNNING';
 
     // get item that the new flag will target

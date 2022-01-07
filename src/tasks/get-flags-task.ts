@@ -8,7 +8,9 @@ import { Flag } from '../interfaces/flag';
 import { BaseItemFlagTask } from './base-item-flag-task';
 
 export class GetFlagsTask extends BaseItemFlagTask<readonly Flag[]> {
-  get name(): string { return GetFlagsTask.name; }
+  get name(): string {
+    return GetFlagsTask.name;
+  }
 
   constructor(member: Member, itemFlagService: ItemFlagService) {
     super(member, null, null, itemFlagService);

@@ -1,8 +1,13 @@
 // global
 import { FastifyLoggerInstance } from 'fastify';
 import {
-  Actor, DatabaseTransactionHandler, IndividualResultType,
-  PostHookHandlerType, PreHookHandlerType, Task, TaskStatus
+  Actor,
+  DatabaseTransactionHandler,
+  IndividualResultType,
+  PostHookHandlerType,
+  PreHookHandlerType,
+  Task,
+  TaskStatus,
 } from 'graasp';
 // other services
 import { Member, ItemService, ItemMembershipService } from 'graasp';
@@ -24,9 +29,12 @@ export abstract class BaseItemFlagTask<R> implements Task<Actor, R> {
   preHookHandler: PreHookHandlerType<R>;
   postHookHandler: PostHookHandlerType<R>;
 
-  constructor(actor: Member,
-              itemService: ItemService, itemMembershipService: ItemMembershipService,
-              itemFlagService: ItemFlagService) {
+  constructor(
+    actor: Member,
+    itemService: ItemService,
+    itemMembershipService: ItemMembershipService,
+    itemFlagService: ItemFlagService,
+  ) {
     this.actor = actor;
     this.itemService = itemService;
     this.itemMembershipService = itemMembershipService;
@@ -35,8 +43,15 @@ export abstract class BaseItemFlagTask<R> implements Task<Actor, R> {
   }
 
   abstract get name(): string;
-  get result(): R { return this._result; }
-  get message(): string { return this._message; }
+  get result(): R {
+    return this._result;
+  }
+  get message(): string {
+    return this._message;
+  }
 
-  abstract run(handler: DatabaseTransactionHandler, log?: FastifyLoggerInstance): Promise<void | BaseItemFlagTask<R>[]>;
+  abstract run(
+    handler: DatabaseTransactionHandler,
+    log?: FastifyLoggerInstance,
+  ): Promise<void | BaseItemFlagTask<R>[]>;
 }
