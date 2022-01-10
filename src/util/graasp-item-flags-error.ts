@@ -2,7 +2,7 @@ import { GraaspErrorDetails, GraaspError } from 'graasp';
 
 export class GraaspItemFlagsError implements GraaspError {
   name: string;
-  code: string
+  code: string;
   message: string;
   statusCode?: number;
   data?: unknown;
@@ -34,4 +34,3 @@ export class FlagNotFound extends GraaspItemFlagsError {
     super({ code: 'GIFERR003', statusCode: 404, message: 'Flag not found' }, data);
   }
 }
-

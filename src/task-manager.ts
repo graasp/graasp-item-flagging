@@ -13,7 +13,8 @@ export class TaskManager implements ItemFlagTaskManager {
   private itemFlagService: ItemFlagService;
 
   constructor(
-    itemService: ItemService, itemMembershipService: ItemMembershipService,
+    itemService: ItemService,
+    itemMembershipService: ItemMembershipService,
     itemFlagService: ItemFlagService,
   ) {
     this.itemService = itemService;
@@ -21,13 +22,23 @@ export class TaskManager implements ItemFlagTaskManager {
     this.itemFlagService = itemFlagService;
   }
 
-  getCreateTaskName(): string { return CreateItemFlagTask.name; }
+  getCreateTaskName(): string {
+    return CreateItemFlagTask.name;
+  }
 
-  getGetFlagsName(): string { return GetFlagsTask.name; }
+  getGetFlagsName(): string {
+    return GetFlagsTask.name;
+  }
 
   createCreateTask(member: Member, data: Partial<ItemFlag>, itemId: string): CreateItemFlagTask {
-    return new CreateItemFlagTask(member, data, itemId,
-      this.itemService, this.itemMembershipService, this.itemFlagService);
+    return new CreateItemFlagTask(
+      member,
+      data,
+      itemId,
+      this.itemService,
+      this.itemMembershipService,
+      this.itemFlagService,
+    );
   }
 
   createGetFlagsTask(member: Member): GetFlagsTask {
