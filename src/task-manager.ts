@@ -1,24 +1,24 @@
-// other services
-import { Member, ItemService, ItemMembershipService } from 'graasp';
-// local
+import {
+  Actor,
+  ItemMembershipService,
+  ItemService,
+  ItemTaskManager,
+  Member,
+  Task,
+} from '@graasp/sdk';
+
 import { ItemFlagService } from './db-service';
 import { ItemFlag } from './interfaces/item-flag';
-import { CreateItemFlagTask } from './tasks/create-item-flag-task';
 import { ItemFlagTaskManager } from './interfaces/item-flag-task-manager';
+import { CreateItemFlagTask } from './tasks/create-item-flag-task';
 import { GetFlagsTask } from './tasks/get-flags-task';
 
 export class TaskManager implements ItemFlagTaskManager {
-  private itemService: ItemService;
-  private itemMembershipService: ItemMembershipService;
+  private itemTaskManager: ItemTaskManager;
   private itemFlagService: ItemFlagService;
 
-  constructor(
-    itemService: ItemService,
-    itemMembershipService: ItemMembershipService,
-    itemFlagService: ItemFlagService,
-  ) {
-    this.itemService = itemService;
-    this.itemMembershipService = itemMembershipService;
+  constructor(itemTaskManager: ItemTaskManager, itemFlagService: ItemFlagService) {
+    this.itemTaskManager = itemTaskManager;
     this.itemFlagService = itemFlagService;
   }
 
@@ -30,15 +30,14 @@ export class TaskManager implements ItemFlagTaskManager {
     return GetFlagsTask.name;
   }
 
-  createCreateTask(member: Member, data: Partial<ItemFlag>, itemId: string): CreateItemFlagTask {
-    return new CreateItemFlagTask(
-      member,
-      data,
-      itemId,
-      this.itemService,
-      this.itemMembershipService,
-      this.itemFlagService,
-    );
+  createCreateTaskSequence(
+    member: Member,
+    data: Partial<ItemFlag>,
+    itemId: string,
+  ): Task<Actor, unknown>[] {
+    const tasks = this.itemTaskManager.createGetTaskSequence(member, itemId);
+    const t3 = new CreateItemFlagTask(member, data, itemId, this.itemFlagService);
+    return [...tasks, t3];
   }
 
   createGetFlagsTask(member: Member): GetFlagsTask {

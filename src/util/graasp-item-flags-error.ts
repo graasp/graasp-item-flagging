@@ -1,35 +1,9 @@
-import { GraaspErrorDetails, GraaspError } from 'graasp';
+import { BaseGraaspError } from '@graasp/sdk';
 
-export class GraaspItemFlagsError implements GraaspError {
-  name: string;
-  code: string;
-  message: string;
-  statusCode?: number;
-  data?: unknown;
-  origin: 'core' | 'plugin';
+import { PLUGIN_NAME } from './constants';
 
-  constructor({ code, statusCode, message }: GraaspErrorDetails, data?: unknown) {
-    this.name = code;
-    this.code = code;
-    this.message = message;
-    this.statusCode = statusCode;
-    this.data = data;
-    this.origin = 'plugin';
-  }
-}
-
-export class ItemNotFound extends GraaspItemFlagsError {
-  constructor(data?: unknown) {
-    super({ code: 'GIFERR001', statusCode: 404, message: 'Item not found' }, data);
-  }
-}
-
-export class MemberCannotReadItem extends GraaspItemFlagsError {
-  constructor(data?: unknown) {
-    super({ code: 'GIFERR002', statusCode: 403, message: 'Member cannot read item' }, data);
-  }
-}
-export class FlagNotFound extends GraaspItemFlagsError {
+export class FlagNotFound extends BaseGraaspError {
+  origin = PLUGIN_NAME;
   constructor(data?: unknown) {
     super({ code: 'GIFERR003', statusCode: 404, message: 'Flag not found' }, data);
   }

@@ -1,22 +1,19 @@
-// global
 import { FastifyLoggerInstance } from 'fastify';
+
 import {
   Actor,
   DatabaseTransactionHandler,
   IndividualResultType,
+  Member,
   PostHookHandlerType,
   PreHookHandlerType,
   Task,
   TaskStatus,
-} from 'graasp';
-// other services
-import { Member, ItemService, ItemMembershipService } from 'graasp';
-// local
+} from '@graasp/sdk';
+
 import { ItemFlagService } from '../db-service';
 
 export abstract class BaseItemFlagTask<R> implements Task<Actor, R> {
-  protected itemService: ItemService;
-  protected itemMembershipService: ItemMembershipService;
   protected itemFlagService: ItemFlagService;
   protected _result: R;
   protected _message: string;
@@ -29,17 +26,10 @@ export abstract class BaseItemFlagTask<R> implements Task<Actor, R> {
   preHookHandler: PreHookHandlerType<R>;
   postHookHandler: PostHookHandlerType<R>;
 
-  constructor(
-    actor: Member,
-    itemService: ItemService,
-    itemMembershipService: ItemMembershipService,
-    itemFlagService: ItemFlagService,
-  ) {
+  constructor(actor: Member, itemFlagService: ItemFlagService) {
     this.actor = actor;
-    this.itemService = itemService;
-    this.itemMembershipService = itemMembershipService;
     this.itemFlagService = itemFlagService;
-    this.status = 'NEW';
+    this.status = TaskStatus.NEW;
   }
 
   abstract get name(): string;

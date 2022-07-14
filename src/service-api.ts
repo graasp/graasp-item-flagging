@@ -1,21 +1,18 @@
-// global
 import { FastifyPluginAsync } from 'fastify';
 
-// local
-import common, { create, getFlags } from './schemas';
 import { ItemFlagService } from './db-service';
 import { ItemFlag } from './interfaces/item-flag';
+import common, { create, getFlags } from './schemas';
 import { TaskManager } from './task-manager';
 
 const plugin: FastifyPluginAsync = async (fastify) => {
   const {
-    items: { dbService: iS },
-    itemMemberships: { dbService: iMS },
+    items: { taskManager: iTM },
     taskRunner: runner,
   } = fastify;
 
   const iFS = new ItemFlagService();
-  const taskManager = new TaskManager(iS, iMS, iFS);
+  const taskManager = new TaskManager(iTM, iFS);
 
   // schemas
   fastify.addSchema(common);
@@ -31,8 +28,8 @@ const plugin: FastifyPluginAsync = async (fastify) => {
     '/:itemId/flags',
     { schema: create },
     async ({ member, params: { itemId }, body, log }) => {
-      const task = taskManager.createCreateTask(member, body, itemId);
-      return runner.runSingle(task, log);
+      const tasks = taskManager.createCreateTaskSequence(member, body, itemId);
+      return runner.runSingleSequence(tasks, log);
     },
   );
 };
