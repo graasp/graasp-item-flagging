@@ -1,11 +1,4 @@
-import {
-  Actor,
-  ItemMembershipService,
-  ItemService,
-  ItemTaskManager,
-  Member,
-  Task,
-} from '@graasp/sdk';
+import { Actor, ItemTaskManager, Member, Task } from '@graasp/sdk';
 
 import { ItemFlagService } from './db-service';
 import { ItemFlag } from './interfaces/item-flag';
