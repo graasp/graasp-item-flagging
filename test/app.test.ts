@@ -1,8 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 
 import { HttpMethod } from '@graasp/sdk';
-import { ItemTaskManager, TaskRunner } from 'graasp-test';
-import MockTask from 'graasp-test/src/tasks/task';
+import { ItemTaskManager, Task as MockTask, TaskRunner } from 'graasp-test';
 
 import build from './app';
 import { MOCK_FLAGS, MOCK_ITEM } from './fixtures';
@@ -51,7 +50,6 @@ describe('Item Flag Tests', () => {
         url: `/${MOCK_ITEM.id}/flags`,
         payload: { flagId: MOCK_FLAGS[0].id },
       });
-      console.log('response: ', response);
 
       await app.close();
       expect(response.statusCode).toBe(StatusCodes.OK);
