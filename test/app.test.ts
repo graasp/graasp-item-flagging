@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 
+import { HttpMethod } from '@graasp/sdk';
 import { ItemTaskManager, TaskRunner } from 'graasp-test';
 import MockTask from 'graasp-test/src/tasks/task';
 
@@ -26,7 +27,7 @@ describe('Item Flag Tests', () => {
       jest.spyOn(runner, 'runSingle').mockImplementation(async () => MOCK_FLAGS);
 
       const response = await app.inject({
-        method: 'GET',
+        method: HttpMethod.GET,
         url: '/flags',
       });
 
@@ -46,7 +47,7 @@ describe('Item Flag Tests', () => {
       jest.spyOn(runner, 'runSingleSequence').mockImplementation(async () => MOCK_FLAGS);
 
       const response = await app.inject({
-        method: 'POST',
+        method: HttpMethod.POST,
         url: `/${MOCK_ITEM.id}/flags`,
         payload: { flagId: MOCK_FLAGS[0].id },
       });
@@ -61,7 +62,7 @@ describe('Item Flag Tests', () => {
       const app = await build(buildAppOptions());
 
       const response = await app.inject({
-        method: 'POST',
+        method: HttpMethod.POST,
         url: '/invalid-id/flags',
         payload: MOCK_FLAGS[0],
       });
@@ -74,7 +75,7 @@ describe('Item Flag Tests', () => {
       const app = await build(buildAppOptions());
 
       const response = await app.inject({
-        method: 'POST',
+        method: HttpMethod.POST,
         url: `/${MOCK_ITEM.id}/flags`,
         payload: { id: 'invalid-id' },
       });
