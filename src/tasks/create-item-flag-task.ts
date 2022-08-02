@@ -1,7 +1,6 @@
 import { FastifyLoggerInstance } from 'fastify';
 
-import { DatabaseTransactionHandler, TaskStatus } from '@graasp/sdk';
-import { Member } from '@graasp/sdk';
+import { DatabaseTransactionHandler, Member, TaskStatus } from '@graasp/sdk';
 
 import { BaseItemFlag } from '../base-item-flag';
 import { ItemFlagService } from '../db-service';
