@@ -1,8 +1,7 @@
-// global
-import { sql, DatabaseTransactionConnection as TrxHandler } from 'slonik';
-// local
-import { ItemFlag } from './interfaces/item-flag';
+import { DatabaseTransactionConnection as TrxHandler, sql } from 'slonik';
+
 import { Flag } from './interfaces/flag';
+import { ItemFlag } from './interfaces/item-flag';
 
 /**
  * Database's first layer of abstraction for Item Flags

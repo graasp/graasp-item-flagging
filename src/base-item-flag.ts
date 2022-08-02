@@ -1,4 +1,3 @@
-// local
 import { ItemFlag } from './interfaces/item-flag';
 
 export class BaseItemFlag implements ItemFlag {
